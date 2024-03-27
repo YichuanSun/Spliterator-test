@@ -53,7 +53,7 @@ public class AppTest
     }
     System.out.println("\n");
     ArrayBackedSpliterator
-        spliterator = new ArrayBackedSpliterator(mArray, 0, mSize, mSize, Spliterator.SIZED);
+        spliterator = new ArrayBackedSpliterator(mArray, 0, mSize, mSize, Spliterator.ORDERED);
     Stream<Integer> stream = StreamSupport.stream(spliterator, true);
     List<Integer> li = stream.map(x -> x + 1).collect(Collectors.toList());
     for (int i = 0; i < mSize; i++) {
