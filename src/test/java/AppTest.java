@@ -2,8 +2,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.example.ArrayBackedSpliterator;
+import org.junit.Assert;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Spliterator;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -43,7 +48,8 @@ public class AppTest
   }
 
   public void testArrayBackedSpliterator() {
-    int mSize = 32;
+    // make sure the init size is equal to the bat size?
+    int mSize = 89;
     Integer[] mArray = new Integer[mSize];
     for (int i = 0; i < mSize; i++) {
       mArray[i] = i;
@@ -53,12 +59,14 @@ public class AppTest
     }
     System.out.println("\n");
     ArrayBackedSpliterator
-        spliterator = new ArrayBackedSpliterator(mArray, 0, mSize, mSize, Spliterator.ORDERED);
+        spliterator = new ArrayBackedSpliterator(mArray, 0, mSize, mSize, Spliterator.NONNULL, true);
     Stream<Integer> stream = StreamSupport.stream(spliterator, true);
-    List<Integer> li = stream.map(x -> x + 1).collect(Collectors.toList());
-    for (int i = 0; i < mSize; i++) {
+    List<Integer> li = stream.sorted().collect(Collectors.toList());
+    for (int i = 0; i < li.size(); i++) {
       System.out.print(li.get(i) + " ");
     }
+    Set<Integer> se = new HashSet<>(li);
+    Assert.assertEquals(se.size(), li.size());
     System.out.println("\n");
   }
 }

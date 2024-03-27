@@ -29,9 +29,9 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
   private final int mFence;  // one past last index
   private final int mCharacteristics;
   private final int mBatchEnd;    // the end position of current batch.
-  private static final int mBatchSizeThreshold = 10;
-  private static int mBatchSize = 32;
-  private AtomicBoolean mFetchFlag = new AtomicBoolean(false);
+  private static final int mBatchSizeThreshold = 45;
+  private static final int mBatchSize = 79;
+  private final AtomicBoolean mFetchFlag = new AtomicBoolean(false);
 
   /**
    * @param array the array, assumed to be unmodified during use
@@ -43,46 +43,51 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
    * {@code SUBSIZED} which are always reported
    */
   public ArrayBackedSpliterator(Object[] array, int origin, int fence, int end,
-                                int additionalCharacteristics) {
+                                int additionalCharacteristics, boolean fg) {
     System.out.println("ctor the object id: " + this.hashCode()
         + " tid: " + Thread.currentThread().getId() + " cur time: " + System.currentTimeMillis());
-    System.out.println("$$$$$$$ begin: " + origin + " end: " + fence);
+    System.out.println("$$$$$$$ begin: " + origin + " fence: " + fence + " batchEnd: " + end);
     mArray = array;
     mIndex = origin;
     mFence = fence;
 //    mCharacteristics = additionalCharacteristics | Spliterator.SIZED | Spliterator.SUBSIZED;
     mCharacteristics = additionalCharacteristics;
     mBatchEnd = end;
-    if (mFence == mBatchEnd) {
-      mFetchFlag.set(true);
-    }
+    mFetchFlag.set(fg);
   }
 
   @Override
   public Spliterator<T> trySplit() {
-    if (mBatchEnd >= mBatchSize * 3) {
-      System.out.println("The end point.");
+    if (mBatchEnd >= mBatchSize * 3)  {
+      System.out.println("batch terminates.");
       return null;
     }
-    int lo = mIndex, mid = (lo + mFence) >>> 1;
-    System.out.println("trySplit the object id: " + this.hashCode()
-        + " tid: " + Thread.currentThread().getId() + " element amount: " + (mid - lo));
-    Spliterator<T> spliterator;
-    if (lo >= mid) {
-      spliterator = null;
-    } else if (mFence != mBatchEnd) {
-      spliterator = new ArrayBackedSpliterator<>(mArray, lo, mIndex = mid, mBatchEnd, mCharacteristics);
-    } else if (mid - lo <= mBatchSizeThreshold && mFetchFlag.compareAndSet(true, false)) {
-      System.out.println("now fetch another batch.");
-      // fetch another batch, but only fetch once
-      spliterator = new ArrayBackedSpliterator<>(ArrayBackedSpliterator.fetchAnotherBatch(mBatchEnd),
-          0, mBatchSize, mBatchEnd + mBatchSize, mCharacteristics);
-    } else if (mid - lo <= mBatchSizeThreshold) {
-      spliterator = null;
-    } else {
-      spliterator = new ArrayBackedSpliterator<>(mArray, lo, mIndex = mid, mBatchEnd, mCharacteristics);
+    int lo = mIndex;
+    int mid = (lo + mFence) >>> 1;
+    if (lo >= mid)  {
+      return null;
     }
-    return spliterator;
+    // TODO(Yichuan): The condition may have potential bugs.
+    if (mBatchEnd % mFence == 0) {
+      if (mid - lo <= mBatchSizeThreshold) {
+        if (mFetchFlag.compareAndSet(true, false)) {
+          System.out.println("fetch next batch. begin: " + mIndex + " fence: " + mFence + " batchEnd: " + mBatchEnd);
+          // fetch next batch.
+          return new ArrayBackedSpliterator<>(ArrayBackedSpliterator
+              .fetchAnotherBatch(mBatchEnd), 0, mBatchSize, mBatchEnd + mBatchSize, mCharacteristics, true);
+        } else {
+          return null;
+        }
+      } else {
+        System.out.println("batchEnd % mFence == 0, while interval > threshold.");
+        return new ArrayBackedSpliterator<>(mArray, lo, mIndex = mid, mBatchEnd, mCharacteristics, false);
+      }
+    }
+    // lo < mid, and mBatchEnd != mFence
+    if (mid - lo <= mBatchSizeThreshold) {
+      return null;
+    }
+    return new ArrayBackedSpliterator<>(mArray, lo, mIndex = mid, mBatchEnd, mCharacteristics, false);
   }
 
   @SuppressWarnings("unchecked")
