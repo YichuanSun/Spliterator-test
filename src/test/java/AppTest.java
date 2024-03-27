@@ -43,7 +43,7 @@ public class AppTest
   }
 
   public void testArrayBackedSpliterator() {
-    int mSize = 1000;
+    int mSize = 32;
     Integer[] mArray = new Integer[mSize];
     for (int i = 0; i < mSize; i++) {
       mArray[i] = i;

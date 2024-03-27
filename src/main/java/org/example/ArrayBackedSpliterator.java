@@ -40,33 +40,38 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
    */
   public ArrayBackedSpliterator(Object[] array, int origin, int fence, int end,
                                 int additionalCharacteristics) {
+    System.out.println("ctor the object id: " + this.hashCode()
+        + " tid: " + Thread.currentThread().getId() + " cur time: " + System.currentTimeMillis());
     System.out.println("$$$$$$$ begin: " + origin + " end: " + fence);
     mArray = array;
     mIndex = origin;
     mFence = fence;
     mCharacteristics = additionalCharacteristics | Spliterator.SIZED | Spliterator.SUBSIZED;
     mEnd = end;
+    if (mFence == mEnd) {
+      System.out.println("!!! " + mIndex + " " + mFence);
+    }
   }
 
   @Override
   public Spliterator<T> trySplit() {
-    System.out.println("Thread amount:" + Thread.activeCount());
-    if (mFence == mEnd) {
-      System.out.println("!!! " + mIndex + " " + mFence);
-    }
     int lo = mIndex, mid = (lo + mFence) >>> 1;
     System.out.println("element amount: " + (mid - lo));
+    Spliterator<T> spliterator;
     if (lo >= mid) {
-      return null;
+      spliterator = null;
     } else {
       System.out.println("current spliterator number: " + mInt.addAndGet(1));
-      return new ArrayBackedSpliterator<>(mArray, lo, mIndex = mid, mEnd, mCharacteristics);
+      spliterator = new ArrayBackedSpliterator<>(mArray, lo, mIndex = mid, mEnd, mCharacteristics);
     }
+    return spliterator;
   }
 
   @SuppressWarnings("unchecked")
   @Override
   public void forEachRemaining(Consumer<? super T> action) {
+    System.out.println("forEachRemaining: The object id: " + this.hashCode()
+        + " tid: " + Thread.currentThread().getId() + " cur time:" + System.currentTimeMillis());
     Object[] a;
     int i;
     int hi; // hoist accesses and checks from loop
