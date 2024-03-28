@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ef816386-a683-464b-88ce-4d66d9b75948" name="Changes" comment="The forEachRemaining is running before all trySplit finish.">
+    <list default="true" id="ef816386-a683-464b-88ce-4d66d9b75948" name="Changes" comment="fix all bugs found.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ArrayBackedSpliterator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ArrayBackedSpliterator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/AppTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +57,20 @@
       <recent name="org.example" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.AppTest.testArrayBackedSpliterator">
+    <configuration name="CustomSpliterator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.example.CustomSpliterator" />
+      <module name="java-maven-test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AppTest.testArrayBackedSpliterator" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="java-maven-test" />
       <option name="PACKAGE_NAME" value="" />
@@ -65,6 +84,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.AppTest.testArrayBackedSpliterator" />
+        <item itemvalue="Application.CustomSpliterator" />
       </list>
     </recent_temporary>
   </component>
@@ -77,7 +97,7 @@
       <option name="presentableId" value="Default" />
       <updated>1711427721887</updated>
       <workItem from="1711427723498" duration="10723000" />
-      <workItem from="1711519441819" duration="5732000" />
+      <workItem from="1711519441819" duration="15485000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />
@@ -95,7 +115,23 @@
       <option name="project" value="LOCAL" />
       <updated>1711521122362</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="tmp save of a wrong algorithm.">
+      <option name="closed" value="true" />
+      <created>1711525952654</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1711525952654</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fix all bugs found.">
+      <option name="closed" value="true" />
+      <created>1711531743543</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1711531743543</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -104,7 +140,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="The forEachRemaining is running before all trySplit finish." />
-    <option name="LAST_COMMIT_MESSAGE" value="The forEachRemaining is running before all trySplit finish." />
+    <MESSAGE value="tmp save of a wrong algorithm." />
+    <MESSAGE value="fix all bugs found." />
+    <option name="LAST_COMMIT_MESSAGE" value="fix all bugs found." />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

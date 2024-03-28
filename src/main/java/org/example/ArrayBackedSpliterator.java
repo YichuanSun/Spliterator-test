@@ -29,8 +29,8 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
   private final int mFence;  // one past last index
   private final int mCharacteristics;
   private final int mBatchEnd;    // the end position of current batch.
-  private static final int mBatchSizeThreshold = 45;
-  private static final int mBatchSize = 79;
+  private static final int mBatchSizeThreshold = 8;
+  private static final int mBatchSize = 64;
   private final AtomicBoolean mFetchFlag = new AtomicBoolean(false);
 
   /**
@@ -58,6 +58,9 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
 
   @Override
   public Spliterator<T> trySplit() {
+    if (mBatchEnd == mFence) {
+      System.out.println("@@@: " + Thread.currentThread().getId() + " " + this.hashCode());
+    }
     if (mBatchEnd >= mBatchSize * 3)  {
       System.out.println("batch terminates.");
       return null;
@@ -95,6 +98,7 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
   public void forEachRemaining(Consumer<? super T> action) {
 //    System.out.println("forEachRemaining: The object id: " + this.hashCode()
 //        + " tid: " + Thread.currentThread().getId() + " cur time:" + System.currentTimeMillis());
+    System.out.println("----------------");
     Object[] a;
     int i;
     int hi; // hoist accesses and checks from loop
