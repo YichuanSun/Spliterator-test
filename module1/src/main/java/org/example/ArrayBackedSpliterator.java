@@ -29,8 +29,8 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
   private final int mFence;  // one past last index
   private final int mCharacteristics;
   private final int mBatchEnd;    // the end position of current batch.
-  private static final int mBatchSizeThreshold = 8;
-  private static final int mBatchSize = 64;
+  private static int mBatchSizeThreshold = 12;
+  private static int mBatchSize = 48;
   private final AtomicBoolean mFetchFlag = new AtomicBoolean(false);
 
   /**
@@ -50,7 +50,6 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
     mArray = array;
     mIndex = origin;
     mFence = fence;
-//    mCharacteristics = additionalCharacteristics | Spliterator.SIZED | Spliterator.SUBSIZED;
     mCharacteristics = additionalCharacteristics;
     mBatchEnd = end;
     mFetchFlag.set(fg);
@@ -71,7 +70,7 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
       return null;
     }
     // TODO(Yichuan): The condition may have potential bugs.
-    if (mBatchEnd % mFence == 0) {
+    if (mArray.length == mFence) {
       if (mid - lo <= mBatchSizeThreshold) {
         if (mFetchFlag.compareAndSet(true, false)) {
           System.out.println("fetch next batch. begin: " + mIndex + " fence: " + mFence + " batchEnd: " + mBatchEnd);
@@ -96,9 +95,6 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
   @SuppressWarnings("unchecked")
   @Override
   public void forEachRemaining(Consumer<? super T> action) {
-//    System.out.println("forEachRemaining: The object id: " + this.hashCode()
-//        + " tid: " + Thread.currentThread().getId() + " cur time:" + System.currentTimeMillis());
-    System.out.println("----------------");
     Object[] a;
     int i;
     int hi; // hoist accesses and checks from loop
@@ -147,5 +143,13 @@ public class ArrayBackedSpliterator<T> implements Spliterator<T> {
       a[i] = batchEnd + i;
     }
     return a;
+  }
+
+  static void setBatchSizeThreshold(int threshold) {
+    mBatchSizeThreshold = threshold;
+  }
+
+  static void setBatchSize(int batchSize) {
+    mBatchSize = batchSize;
   }
 }

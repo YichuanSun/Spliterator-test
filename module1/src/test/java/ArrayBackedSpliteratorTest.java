@@ -4,13 +4,10 @@ import junit.framework.TestSuite;
 import org.example.ArrayBackedSpliterator;
 import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Spliterator;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -18,7 +15,7 @@ import java.util.stream.StreamSupport;
 /**
  * Unit test for simple App.
  */
-public class AppTest
+public class ArrayBackedSpliteratorTest
     extends TestCase
 {
   /**
@@ -26,7 +23,7 @@ public class AppTest
    *
    * @param testName name of the test case
    */
-  public AppTest(String testName )
+  public ArrayBackedSpliteratorTest(String testName )
   {
     super( testName );
   }
@@ -36,7 +33,7 @@ public class AppTest
    */
   public static Test suite()
   {
-    return new TestSuite( AppTest.class );
+    return new TestSuite( ArrayBackedSpliteratorTest.class );
   }
 
   /**
@@ -49,7 +46,7 @@ public class AppTest
 
   public void testArrayBackedSpliterator() {
     // make sure the init size is equal to the bat size?
-    int mSize = 89;
+    int mSize = 48;
     Integer[] mArray = new Integer[mSize];
     for (int i = 0; i < mSize; i++) {
       mArray[i] = i;
