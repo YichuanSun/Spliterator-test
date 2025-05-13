@@ -4,13 +4,14 @@ import junit.framework.TestSuite;
 import org.example.ArrayBackedSpliterator;
 import org.junit.Assert;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFileAttributes;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Spliterator;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -68,5 +69,14 @@ public class AppTest
     Set<Integer> se = new HashSet<>(li);
     Assert.assertEquals(se.size(), li.size());
     System.out.println("\n");
+  }
+
+  @org.junit.Test
+  public void test1() throws Exception {
+    String tpath = "/Users/sunbowen/code/java-maven-test/link";
+    File file = new File(tpath);
+    PosixFileAttributes attr =
+        Files.readAttributes(Paths.get(file.getPath()), PosixFileAttributes.class);
+    Assert.assertTrue(file.isFile());
   }
 }
